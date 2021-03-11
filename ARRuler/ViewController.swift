@@ -14,6 +14,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     
     var dotNodes = [SCNNode]()
+    var textNode = SCNNode()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,9 +95,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func updateText(text: String, atPosition position: SCNVector3) {
+        textNode.removeFromParentNode() // clear the previous text before showing a new one
         let textGeometry = SCNText(string: text, extrusionDepth: 1.0)
         textGeometry.firstMaterial?.diffuse.contents = UIColor.red // create only 1 material
-        let textNode = SCNNode(geometry: textGeometry)
+        textNode = SCNNode(geometry: textGeometry)
         // center on horizontal x, a little higher y, 10cm closer
         textNode.position = SCNVector3(position.x, position.y + 0.01, position.z)
         textNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
