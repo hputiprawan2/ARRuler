@@ -43,6 +43,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if dotNodes.count >= 2 {
+            for dot in dotNodes {
+                dot.removeFromParentNode() // take the 3d nodes of the scene, remove 2 previous dots, and show the new dot
+            }
+            dotNodes = [SCNNode]() // clear the dotNodes array
+        }
+        
         // Detect the location when user touches the screen
         if let touchLocation = touches.first?.location(in: sceneView) {
             if let query = sceneView.raycastQuery(from: touchLocation, allowing: .estimatedPlane, alignment: .any) {
@@ -83,7 +90,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let b = end.position.y - start.position.y
         let c = end.position.z - start.position.z
         let distance = sqrt(pow(a, 2) + pow(b, 2) + pow(c, 2))
-        updateText(text: "\(abs(distance))", atPosition: end.position)
+        updateText(text: "\(abs(distance))", atPosition: start.position)
     }
     
     private func updateText(text: String, atPosition position: SCNVector3) {
